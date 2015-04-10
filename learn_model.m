@@ -7,18 +7,22 @@ nb_instances = size(dataset,3);
 nb_classes = 4;
 init_probs = 0.25*ones(nb_instances,nb_classes);
 
+%size(init_probs(:,1))
+%size(squeeze(dataset(10,1,:))) 
+
 %Naive Bayes
 if nargin < 3
     %Initialization of the resulting arrays.
     for i = 1:nb_joints
-        model.jointparts(i).means =  zeros (nb_class, nb_var);
-        model.jointparts(i).sigma =  zeros (nb_class, nb_var);
+        model.jointparts(i).means =  zeros (nb_classes, nb_var);
+        model.jointparts(i).sigma =  zeros (nb_classes, nb_var);
     end
     
-    for i_cl=1:nb_class        
+    for i_cl=1:nb_classes        
          for i = 1:nb_joints        
             for i_var=1:nb_var                
-                  [model.jointparts(i).means(i_var,i_cl) model.jointparts(i).sigma(i_var,i_cl)] = fit_gaussian(dataset(i,i_var,:), init_probs(:,i_cl));
+                  [model.jointparts(i).means(i_var,i_cl) model.jointparts(i).sigma(i_var,i_cl)] = fit_gaussian(squeeze(dataset(i,i_var,:)), init_probs(:,i_cl));
+                  
             end
         end
     end

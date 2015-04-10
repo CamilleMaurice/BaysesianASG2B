@@ -4,7 +4,7 @@ function [betas sigma] = fit_linear_gaussian(Y,X,P)
 %     Y: vector Dx1 with the observations for the variable
 %     X: matrix DxV with the observations for the parent variables
 %               of X. V is the number of parent variables
-%
+
 
 b_tmp = [];
 nb_par= size(X,2);
@@ -30,7 +30,9 @@ size(A(1,1));
 %Concatenate the inner part and the top
 A(1,1)=1;
 A(2:end,2:end) = A_inner(:,:);
+betas = A\b;
 
+sigma = sum(P.*((Y-b(1)).^2)) / sum(P);
 
 
 end

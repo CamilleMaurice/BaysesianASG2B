@@ -5,8 +5,8 @@ nb_var = size(dataset,2); %3 for (x,y,z)
 %defining the uniform initial probabilities matrix
 nb_instances = size(dataset,3);
 nb_classes = 4;
-init_probs = 0.25*ones(nb_instances,nb_classes);
-probs = init_probs ;
+%init_probs = 0.25*ones(nb_instances,nb_classes);
+%probs = init_probs ;
 
 %size(init_probs(:,1))
 %size(squeeze(dataset(10,1,:))) 
@@ -45,15 +45,15 @@ if nargin == 3
         for i=1:nb_joints-1%-1 car skeleton n'a que 19 rows pas 20
             %Get the parent coordinates (x,y,z) for all instances for the
             %joint parent of joint i
-            joint_parent = nui_skeleton_conn(i,1);
+            joint_parent = Graph(i,1);
             X = squeeze(dataset(joint_parent,:,:))';
             
             for coord = 1:nb_var
                 Y = squeeze(dataset(i,coord,:));
-                %Following not implemented yet
-                %[beta,sigma] = fit_linear_gaussian(Y,X,P);
-                %model.jointparts(i).sigma(coord,i_cl) = sigma;
-                %model.jointparts(i).betas(coord:3:12,i_cl) = beta; 
+                %Following not tested yet
+                [beta,sigma] = fit_linear_gaussian(Y,X,P);
+                model.jointparts(i).sigma(coord,i_cl) = sigma;
+                model.jointparts(i).betas(coord:3:12,i_cl) = beta; 
         end
     end
 end

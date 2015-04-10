@@ -16,7 +16,7 @@ if nargin < 3
     for i_cl=1:nb_classes        
          for i = 1:nb_joints        
             for i_var=1:nb_var                
-                  [model.jointparts(i).means(i_var,i_cl) model.jointparts(i).sigma(i_var,i_cl)] = fit_gaussian(squeeze(dataset(i,i_var,:)), init_probs(:,i_cl));
+                  [model.jointparts(i).means(i_var,i_cl) model.jointparts(i).sigma(i_var,i_cl)] = fit_gaussian(squeeze(dataset(i,i_var,:)), probs(:,i_cl));
                   
             end
         end

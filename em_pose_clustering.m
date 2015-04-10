@@ -1,4 +1,3 @@
-init_probs = [];
 
 function [model probs] = em_pose_clustering(data,init_probs,max_iters,graph)%20*3*N,N*K inst*classes we can init with random
 %each rowm add up to 1
@@ -18,9 +17,10 @@ function [model probs] = em_pose_clustering(data,init_probs,max_iters,graph)%20*
             model = Mstep(data,probs);
         %E-step to get probs of missing values
         %randomising probs of missing values its the other way around
-        for i = 1:N
+        for i = 1:size(data,3)%N
             %1*K logprob
-            logprob = compute_log_likeklihood(data(:,:,i),model);
+            c = 1
+            logprob = compute_loglikeklihood(data(:,:,i),model);
             probs(i,:) = exp(logprobs-min(logprobs)-log(min(exp(logprobs-min(logprobs)))));
             %            normalize logprob;
         end

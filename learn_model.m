@@ -14,8 +14,8 @@ init_probs = 0.25*ones(nb_instances,nb_classes);
 if nargin < 3
     %Initialization of the resulting arrays.
     for i = 1:nb_joints
-        model.jointparts(i).means =  zeros (nb_classes, nb_var);
-        model.jointparts(i).sigma =  zeros (nb_classes, nb_var);
+        model.jointparts(i).means =  zeros (nb_var, nb_classes);
+        model.jointparts(i).sigma =  zeros (nb_var, nb_classes);
     end
     
     for i_cl=1:nb_classes        

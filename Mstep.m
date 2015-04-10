@@ -49,7 +49,9 @@ if nargin == 3
                 model.jointparts(i).sigma(coord,i_cl) = sigma;
                 model.jointparts(i).betas(coord:3:12,i_cl) = beta; 
         end
-    end
+        end
+    
+        model.connectivity = Graph;
 end
 
 

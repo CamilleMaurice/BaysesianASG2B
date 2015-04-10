@@ -4,17 +4,17 @@ function [model probs] = em_pose_clustering(data,init_probs,max_iters,graph)%20*
 
     %defining the uniform initial probabilities matrix
     nb_instances = size(data,3);
-    nb_classes = 3;
+    nb_classes = 4;
     %init_probs = (1/3)*ones(nb_instances,nb_classes);
     
     probs_tmp = init_probs;
     
     for i = 1:max_iters
         %if nargin == 4
-            model = Mstep(data,probs_tmp,graph);
+            %model = Mstep(data,probs_tmp,graph);
             
         %elseif nargin == 3
-            %model = Mstep(data,probs_tmp);
+            model = Mstep(data,probs_tmp);
         %E-step to get probs of missing values
         %randomising probs of missing values its the other way around
         for i = 1:size(data,3)%N

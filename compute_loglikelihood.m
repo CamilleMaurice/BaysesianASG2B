@@ -11,7 +11,7 @@ function l = compute_loglikelihood(instance,model)
 
 sum1 = 0;
 Njoints = size(instance,1); %20
-Nclass = 3 ;
+Nclass = 4 ;
 Nvar = size(instance,2); %x, y, z
 l =  [];
 %Test if the model is naive or gaussian

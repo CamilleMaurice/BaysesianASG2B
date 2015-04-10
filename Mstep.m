@@ -2,7 +2,7 @@ function model = Mstep(dataset, probs, Graph)
 
 nb_joints = size(dataset,1);
 nb_var = size(dataset,2); %3 for (x,y,z)
-nb_classes = 4;
+nb_classes = 3;
 
 
 %Naive Bayes

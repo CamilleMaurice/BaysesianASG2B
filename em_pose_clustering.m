@@ -1,6 +1,15 @@
-function [model probs] = em_pose_clustering(data,initial_probs,max_iters,graph)%20*3*N,N*K inst*classes we can init with random
+init_probs = [];
+
+function [model probs] = em_pose_clustering(data,init_probs,max_iters,graph)%20*3*N,N*K inst*classes we can init with random
 %each rowm add up to 1
-    probs=initial_probs;
+
+    %defining the uniform initial probabilities matrix
+    nb_instances = size(data,3);
+    nb_classes = 4;
+    init_probs = 0.25*ones(nb_instances,nb_classes);
+    
+    probs=init_probs;
+    
     for i=1:max_iters
         if nargin==4
             model=Mstep(data,probs,graph);

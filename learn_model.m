@@ -1,4 +1,4 @@
-function model = learn_model(dataset, labels, Graph)
+function model = learn_model(dataset, probs, Graph)
 nb_joints = size(dataset,1);
 nb_var = size(dataset,2); %3 for (x,y,z)
 
@@ -6,6 +6,7 @@ nb_var = size(dataset,2); %3 for (x,y,z)
 nb_instances = size(dataset,3);
 nb_classes = 4;
 init_probs = 0.25*ones(nb_instances,nb_classes);
+probs = init_probs ;
 
 %size(init_probs(:,1))
 %size(squeeze(dataset(10,1,:))) 
@@ -38,8 +39,8 @@ if nargin == 3
     end
    
     for i_cl=1:nb_classes
-        %Get the Initial_probs for all instances corresponding to i_cl.
-        P = init_probs(:,i_cl);
+        %Get the probs for all instances corresponding to i_cl.
+        P = probs(:,i_cl);
         
         for i=1:nb_joints-1%-1 car skeleton n'a que 19 rows pas 20
             %Get the parent coordinates (x,y,z) for all instances for the

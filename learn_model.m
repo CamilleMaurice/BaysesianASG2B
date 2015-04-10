@@ -31,7 +31,31 @@ end
 
 %Linear Gaussian 
 if nargin == 3
-
+        %Initialization of the resulting arrays.
+    for i = 1:nb_joints
+        model.jointparts(i).betas =  zeros (12, nb_classes);
+        model.jointparts(i).sigma =  zeros (3, nb_classes);
+    end
+   
+    for i_cl=1:nb_classes
+        %Get the Initial_probs for all instances corresponding to i_cl.
+        P = init_probs(:,i_cl);
+        
+        for i=1:nb_joints-1%-1 car skeleton n'a que 19 rows pas 20
+            %Get the parent coordinates (x,y,z) for all instances for the
+            %joint parent of joint i
+            joint_parent = nui_skeleton_conn(i,1);
+            X = squeeze(dataset(joint_parent,:,:))';
+            
+            for coord = 1:nb_var
+                Y = squeeze(dataset(i,coord,:));
+                %Following not implemented yet
+                %[beta,sigma] = fit_linear_gaussian(Y,X,P);
+                %model.jointparts(i).sigma(coord,i_cl) = sigma;
+                %model.jointparts(i).betas(coord:3:12,i_cl) = beta; 
+        end
+    end
+end
 
 
 

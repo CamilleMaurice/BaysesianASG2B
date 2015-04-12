@@ -30,7 +30,7 @@ if isfield(model.jointparts,'means')
     end
 else if isfield(model.jointparts,'betas')
     %LINEAR GAUSSIAN MODEL
-   % nui_skeleton_conn=model.connectivity +1;
+    nui_skeleton_conn=model.connectivity;
     for c = 1:Nclass
         for i = 1:Njoints-1
             for j = 1:Nvar

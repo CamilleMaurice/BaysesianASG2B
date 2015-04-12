@@ -33,8 +33,8 @@ skel_model;
 nui_skeleton_conn = nui_skeleton_conn +1;
 a=sum(nui_skeleton_conn(:,1));
 
-[m,p] = em_pose_clustering(dataset,init_probs,nb_iter); 
-%[m,p] = em_pose_clustering(dataset,init_probs,nb_iter,nui_skeleton_conn); 
+%[m,p] = em_pose_clustering(dataset,init_probs,nb_iter); 
+[m,p] = em_pose_clustering(dataset,init_probs,nb_iter,nui_skeleton_conn); 
 
 %checking there is no nan or complex in probs
 assert(sum(sum(isnan(p)))==0 && isreal(p)==1);
@@ -50,13 +50,19 @@ end
 %nb_inst'/2045
 
 %compute the class = corresponding to max probability
+% TO CHANGE
 [prob, classes] =max(p,[],2); 
+
+%plotting the results to have a visual of the clustering
+%how to read? ideally all chunk points would be at the same height and a
+%height would be attained by one chunk only (todo)
 l=linspace(1,2045,2045);
 figure
 plot(l,classes,'dr')
+
 %matrix of confusion (kind of): rows stand for classes, columns for predicted
 %groups
-%TO NOTE the classes are not the same for the rows and columns: we dont
+%TO NOTE: the classes are not the same for the rows and columns: we dont
 %classify wrt class 1 2 3 4 but all A's together B's together etc
 %ideally in a row we should have all the instances in one case and all
 %other to 0

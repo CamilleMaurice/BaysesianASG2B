@@ -1,3 +1,4 @@
+close all;
 clear all;
 clc;
 
@@ -8,13 +9,18 @@ a = load('data.mat');
 dataset=a.data;
 labels=a.labels;
 individuals=a.individuals;
+% figure(1)
+% skel_vis(dataset(:,:,1))
+% figure(2)
+% skel_vis(dataset(:,:,2))
+% figure(3)
+% skel_vis(dataset(:,:,3))
+% figure(4)
+% skel_vis(dataset(:,:,8))
 
 %init probs matrix
 nb_instances = size(dataset,3);
-nb_classes = 4;
-%init_probs = 0.1*ones(nb_instances,nb_classes);
-%init_probs(:,2)=init_probs(:,2)*7;
-%assert(unique(sum(init_probs,2))==1); 
+nb_classes = length(unique(labels));
 init_probs =[];
 for i = 1:nb_instances
     y = rand(1,nb_classes);
@@ -22,12 +28,16 @@ for i = 1:nb_instances
     init_probs = [init_probs; y/s];
 end
 
-%init_probs(1:10,:)
-%graph
-nui_skeleton_conn =[0,1;1,2;2,3;2,4;4,5;5,6;6,7;2,8;8,9;9,10;10,11;0,12;12,13;13,14;14,15;0,16;16,17;17,18;18,19];
+skel_model;
+%nui_skeleton_conn =[0,1;1,2;2,3;2,4;4,5;5,6;6,7;2,8;8,9;9,10;10,11;0,12;12,13;13,14;14,15;0,16;16,17;17,18;18,19];
 nui_skeleton_conn = nui_skeleton_conn +1;
+a=sum(nui_skeleton_conn(:,1));
 
 [m,p] = em_pose_clustering(dataset,init_probs,nb_iter); 
+%[m,p] = em_pose_clustering(dataset,init_probs,nb_iter,nui_skeleton_conn); 
+
+%checking there is no nan or complex in probs
+assert(sum(sum(isnan(p)))==0 && isreal(p)==1);
 
 labels(labels==8)=4;%to smooth with classes
 
@@ -36,22 +46,25 @@ nb_inst=zeros(nb_classes,1);
 for i=1:nb_classes
     nb_inst(i) = length(labels(labels==i));
 end
-nb_inst'
+
+%nb_inst'/2045
 
 %compute the class = corresponding to max probability
 [prob, classes] =max(p,[],2); 
-
-%matrix of confusion: rows stand for actual classes, columns for predicted
-%ones+2 columns for precision and recall
-confusion = zeros(nb_classes,nb_classes+2)-1;
+l=linspace(1,2045,2045);
+figure
+plot(l,classes,'dr')
+%matrix of confusion (kind of): rows stand for classes, columns for predicted
+%groups
+%TO NOTE the classes are not the same for the rows and columns: we dont
+%classify wrt class 1 2 3 4 but all A's together B's together etc
+%ideally in a row we should have all the instances in one case and all
+%other to 0
+confusion = zeros(nb_classes,nb_classes)-1;
 for i=1:nb_classes%actual
     for j=1:nb_classes%predicted
-        confusion(i,j) = sum(classes(labels==i)==j);
+        confusion(i,j) = sum(classes(labels==i)==j)/nb_inst(i);
     end
-    %precision
-    confusion(i,nb_classes+1)=confusion(i,i)/sum(classes(classes==i));
-    %recall
-    confusion(i,nb_classes+2)=confusion(i,i)/nb_inst(i);
 end
 confusion
 
@@ -96,3 +109,4 @@ confusion
 % [a,b]=hist(l4,unique(l4));
 % 
 % % a(b==4)/(idx4-idx3)*100
+assert(a==sum(nui_skeleton_conn(:,1)));

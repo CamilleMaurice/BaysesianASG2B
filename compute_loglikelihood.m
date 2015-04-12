@@ -20,7 +20,9 @@ if isfield(model.jointparts,'means')
     for c = 1:Nclass
         for i = 1:Njoints
             for j = 1:Nvar
-                sum1 = sum1 + (-1/2*log(2*pi*model.jointparts(i).sigma(j,c)) - ((instance(i,j) - model.jointparts(i).means(j,c)).^2)/(2*model.jointparts(i).sigma(j,c)));
+                inlog = 2*pi*model.jointparts(i).sigma(j,c);
+                
+                sum1 = sum1 + (-1/2*log(inlog) - ((instance(i,j) - model.jointparts(i).means(j,c)).^2)/(2*model.jointparts(i).sigma(j,c)));
             end
         end
         l = [l,sum1];
@@ -28,7 +30,7 @@ if isfield(model.jointparts,'means')
     end
 else if isfield(model.jointparts,'betas')
     %LINEAR GAUSSIAN MODEL
-    nui_skeleton_conn=model.connectivity +1;
+   % nui_skeleton_conn=model.connectivity +1;
     for c = 1:Nclass
         for i = 1:Njoints-1
             for j = 1:Nvar

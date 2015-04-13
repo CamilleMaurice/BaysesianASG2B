@@ -32,7 +32,16 @@ A(1,1)=1;
 A(2:end,2:end) = A_inner(:,:);
 betas = A\b;
 
+%
+% covYY=sum(Y.*Y.*P)/sum(P);
+% covYY=covYY-sum(Y.*P)/sum(P)*sum(Y.*P)/sum(P);
+% part=covYY;
+% for i=1:nb_par
+%     for j=1:nb_par
+%         covXX=sum(X(:,i).*X(:,j).*P)/sum(P)-sum(X(:,i).*P)/sum(P)*sum(X(:,j).*P)/sum(P);
+%         part =part+betas(i)*betas(j)*covXX;
+%     end
+% end
+% sigma=covYY+part;
 sigma = sum(P.*((Y-b(1)).^2)) / sum(P);
-
-
 end

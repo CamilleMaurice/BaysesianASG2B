@@ -5,8 +5,8 @@ clc;
 nb_iter=20
 
 a = load('data.mat');
-
-dataset=a.data;
+size(a.data)
+dataset=a.data(:,1:2,:);
 labels=a.labels;
 individuals=a.individuals;
 
@@ -46,7 +46,6 @@ for i = 1:nb_instances
 end
 
 skel_model;
-%nui_skeleton_conn =[0,1;1,2;2,3;2,4;4,5;5,6;6,7;2,8;8,9;9,10;10,11;0,12;12,13;13,14;14,15;0,16;16,17;17,18;18,19];
 nui_skeleton_conn = nui_skeleton_conn +1;
 a=sum(nui_skeleton_conn(:,1));
 
@@ -64,7 +63,7 @@ assert(sum(sum(isnan(p)))==0 && isreal(p)==1);
 
 %plotting the results to have a visual of the clustering
 %how to read? ideally all chunk points would be at the same height and a
-%height would be attained by one chunk only (todo)
+%height would be attained by one chunk only 
 l=linspace(1,2045,2045);
 figure
 plot(l,classes,'dr')
@@ -76,52 +75,11 @@ plot(l,classes,'dr')
 %ideally in a row we should have all the instances in one case and all
 %other to 0
 confusion = zeros(nb_classes,nb_classes)-1;
-for i=1:nb_classes%actual
-    for j=1:nb_classes%predicted
+for i=1:nb_classes
+    for j=1:nb_classes
         confusion(i,j) = sum(classes(labels==i)==j)/nb_inst(i);
     end
 end
 confusion
 
-%hist
-% %size(p)
-% l1 = [];
-% l2=[];
-% l3 = [];
-% l4 = [];
-% for k = 1:idx1
-%    [maximu, id] = max(p(k,:));
-%    l1 = [l1,id];      
-% end
-% %size(l1)
-% [a,b]=hist(l1,unique(l1));
-% 
-% %(idx1-max(a))/idx1*100
-% a(b==1)/idx1*100
-% 
-% for k = idx1+1:idx2
-%    [maximu, id] = max(p(k,:));
-%    l2 = [l2,id];    
-% end
-% [a,b]=hist(l2,unique(l2));
-% 
-% 
-% a(b==2)/(idx2-idx1)*100
-% 
-% for k = idx2+1:idx3
-%    [maximu, id] = max(p(k,:));
-%    l3 = [l3,id];    
-% end
-% [a,b]=hist(l3,unique(l3));
-% 
-% 
-% a(b==3)/(idx3-idx2)*100
-% 
-% for k = idx3+1:idx4
-%    [maximu, id] = max(p(k,:));
-%    l4 = [l4,id];    
-% end
-% [a,b]=hist(l4,unique(l4));
-% 
-% % a(b==4)/(idx4-idx3)*100
 assert(a==sum(nui_skeleton_conn(:,1)));

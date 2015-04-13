@@ -27,7 +27,6 @@ function [model probs] = em_pose_clustering(data,init_probs,max_iters,graph)%20*
             %normalize logprob;
         end
         mean(probs_tmp)
-
     end
     probs = probs_tmp;
 end

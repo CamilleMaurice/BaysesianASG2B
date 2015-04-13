@@ -2,7 +2,7 @@ close all;
 clear all;
 clc;
 
-nb_iter=20
+nb_iter=15
 
 a = load('data.mat');
 
@@ -10,17 +10,13 @@ dataset=a.data;
 labels=a.labels;
 individuals=a.individuals;
 
-nb_instances = size(dataset,3);
-nb_classes = length(unique(labels));
-
-labels(labels==8)=4;%to smooth with classes
 
 %compute #instances for each class
 nb_inst=zeros(nb_classes,1);
 for i=1:nb_classes
     nb_inst(i) = length(labels(labels==i));
 end
-nb_inst
+
 % figure(1)
 % skel_vis(dataset(:,:,1))
 % figure(2)
@@ -30,15 +26,8 @@ nb_inst
 % figure(4)
 % skel_vis(dataset(:,:,8))
 
-init_probs =[];
-
-% for i=1:nb_classes
-%     for j=1:nb_instances
-%         init_probs(j,i)=nb_inst(i)/nb_instances;
-%     end
-% end
-%mean(init_probs)
 %init probs matrix
+init_probs =[];
 for i = 1:nb_instances
     y = rand(1,nb_classes);
     s = sum(y);
@@ -55,6 +44,9 @@ a=sum(nui_skeleton_conn(:,1));
 
 %checking there is no nan or complex in probs
 assert(sum(sum(isnan(p)))==0 && isreal(p)==1);
+
+labels(labels==8)=4;%to smooth with classes
+
 
 %nb_inst'/2045
 

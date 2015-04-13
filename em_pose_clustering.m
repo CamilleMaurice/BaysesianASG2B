@@ -20,14 +20,13 @@ function [model probs] = em_pose_clustering(data,init_probs,max_iters,graph)%20*
         end
         %E-step to get probs of missing values
         %randomising probs of missing values its the other way around    
-        for i = 1:size(data,3)%N
-            %1*K logprob
-            logprobs = compute_loglikelihood(data(:,:,i),model);
-      %      logprobs
+        for i = 1:size(data,3)%N for each instance
+            probs_avg=mean(probs_tmp);
+            logprobs = compute_loglikelihood(data(:,:,i),model,probs_avg);
             probs_tmp(i,:) = exp(logprobs-min(logprobs)-log(sum(exp(logprobs-min(logprobs)))));
-            %            normalize logprob;
+            %normalize logprob;
         end
-                mean(probs_tmp)
+        mean(probs_tmp)
 
     end
     probs = probs_tmp;

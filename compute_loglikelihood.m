@@ -1,4 +1,4 @@
-function l = compute_loglikelihood(instance,model)
+function l = compute_loglikelihood(instance,model,distr)
 %  Input
 %    instance: a 20x3 matrix defining body positions of one instance
 %    model: as given by learn_model
@@ -21,8 +21,7 @@ if isfield(model.jointparts,'means')
         for i = 1:Njoints
             for j = 1:Nvar
                 inlog = 2*pi*model.jointparts(i).sigma(j,c);
-                
-                sum1 = sum1 + (-1/2*log(inlog) - ((instance(i,j) - model.jointparts(i).means(j,c)).^2)/(2*model.jointparts(i).sigma(j,c)));
+                sum1 = sum1 + (-1/2*log(inlog) - distr(c)*((instance(i,j) - model.jointparts(i).means(j,c)).^2)/(2*model.jointparts(i).sigma(j,c)));
             end
         end
         l = [l,sum1];
@@ -38,9 +37,7 @@ else if isfield(model.jointparts,'betas')
                 y = instance(i,j);
                 betas=model.jointparts(i).betas(j:3:12,c)';
                 s=model.jointparts(i).sigma(j,c);
-                %this is what implements loglikelihood and im not very sure
-                %of...
-                sum1 = sum1 + (-1/2*log(2*pi*s))-1/(2*s)*(sum(X.*betas(2:end))+betas(1)-y)^2;%Y[j], ?????? 
+                sum1 = sum1 + (-1/2*log(2*pi*s))-distr(c)/(2*s)*(sum(X.*betas(2:end))+betas(1)-y)^2;%Y[j], ?????? 
             end
         end
         l = [l,sum1];
